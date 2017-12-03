@@ -20,6 +20,7 @@ var args = parseArguments();
 var currentTemp;
 var trend;
 var active = true;
+var taskRefURL;
 
 //init taskrouter
 console.log("Initializing Task Router...")
@@ -63,7 +64,7 @@ function dothisforever () {
         console.log("sending TASK and deactivating");
         if (!args.offline) {
           console.log("actually sending");
-          temptaskresquest(sensor);
+          taskRefURL = tempTaskRequest(sensor);
         }
         active=false;
       }
@@ -74,7 +75,11 @@ function dothisforever () {
     if (!active && (newTemp < args.threshold)) {
       console.log("Temperature dropped BELOW threshold(-" + args.threshold + "°C-)");
       console.log("Previous temperature = " + currentTemp + "°C - New temperature = " + newTemp + "°C");
-      console.log("Activating");
+      console.log("sending Cancel TASK and activating");
+      if (!args.offline) {
+        console.log("actually sending");
+        tempTaskCancel(taskRefURL);
+      }
       active=true;
 //TODO Send API call to cancel the TASK
     }
@@ -85,7 +90,7 @@ function dothisforever () {
 
 
 
-function temptaskresquest(sensorParameters){
+function tempTaskRequest(sensorParameters){
   // create an ordered array of call variables
   var callVarsArray = [sensor.socket, sensor.location, "callVar_value_3",
                        "callVar_value_4", "callVar_value_5", "callVar_value_6"];
@@ -110,8 +115,24 @@ function temptaskresquest(sensorParameters){
       // the `response` is a String that contains the refURL of the newly created task.
       console.log('Task created successfully. RefURL of created task = ' + response);
       // Preserve this and use it for all further operations on the same task.
+      return response;
   }).catch (function(error) {
       console.log('Oops! Something went wrong.');
+  });
+
+}
+
+function tempTaskCancel(refURL){
+  // The call to cancel a task returns a Promise, however there is no data 
+  // in the response that is useful beyond the result of the request (success/failure) 
+  var cancelRequest = taskRouter.cancelTaskRequest(refURL);
+
+  // define behavior on how to resolve the Promise 
+  cancelRequest.then (function(response) {
+    // the `response` does not really contain any data. Just indicates a successful cancellation. 
+    console.log('Task with RefURL \'' + refURL + '\' cancelled successfully.');
+  }).catch (function(error) {
+    console.log('Oops! Something went wrong.');
   });
 }
 
