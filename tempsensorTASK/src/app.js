@@ -5,7 +5,7 @@ var taskRouter = require('cce-task-routing');
 //define parameters
 var socialminer = '10.10.10.5';
 var sensor = {
-  socket: "localhost:3000",
+  socket: "10.10.10.212:3000",
   location: "London"
 };
 
@@ -64,7 +64,7 @@ function dothisforever () {
         console.log("sending TASK and deactivating");
         if (!args.offline) {
           console.log("actually sending");
-          taskRefURL = tempTaskRequest(sensor);
+          tempTaskRequest(sensor);
         }
         active=false;
       }
@@ -78,7 +78,7 @@ function dothisforever () {
       console.log("sending Cancel TASK and activating");
       if (!args.offline) {
         console.log("actually sending");
-        tempTaskCancel(taskRefURL);
+        tempTaskCancel();
       }
       active=true;
 //TODO Send API call to cancel the TASK
@@ -115,24 +115,24 @@ function tempTaskRequest(sensorParameters){
       // the `response` is a String that contains the refURL of the newly created task.
       console.log('Task created successfully. RefURL of created task = ' + response);
       // Preserve this and use it for all further operations on the same task.
-      return response;
+      taskRefURL = response;
   }).catch (function(error) {
       console.log('Oops! Something went wrong.');
   });
 
 }
 
-function tempTaskCancel(refURL){
+function tempTaskCancel(){
   // The call to cancel a task returns a Promise, however there is no data 
   // in the response that is useful beyond the result of the request (success/failure) 
-  var cancelRequest = taskRouter.cancelTaskRequest(refURL);
+  var cancelRequest = taskRouter.cancelTaskRequest(taskRefURL);
 
   // define behavior on how to resolve the Promise 
   cancelRequest.then (function(response) {
     // the `response` does not really contain any data. Just indicates a successful cancellation. 
-    console.log('Task with RefURL \'' + refURL + '\' cancelled successfully.');
+    console.log('Task with RefURL \'' + taskRefURL + '\' cancelled successfully.');
   }).catch (function(error) {
-    console.log('Oops! Something went wrong.');
+    console.log('Oops! Something went wrong.' + error);
   });
 }
 
