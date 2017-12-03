@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <title>ciscocola</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<style type="text/css">
+	.alarm-text {
+		font-family: 'Roboto Slab', serif;
+		text-align: center;
+		font-size: 45px;
+		padding: 0px 10px 0px 10px;
+		margin: 0px;
+		color:red;
+		vertical-align: middle;
+    font-variant: small-caps;
+	}
+	.black-cell{
+	}
+	.alarm-cell{
+		vertical-align: middle;
+	}
+
+	td{
+		background-color: transparent;
+		vertical-align: top;
+
+	}
+	h2{
+		font-family: 'Roboto', sans-serif;
+		vertical-align: top;
+		text-align: center;
+		color: white;
+    font-variant: small-caps;
+
+	}
+
+  #temperature-id{
+		font-size: 100px;
+    margin: 25px;
+	}
+
+  body {
+    background-image: url(https://appcyla.files.wordpress.com/2015/02/m1.jpg);
+  }
+
+  .button {
+      position: relative;
+      background-color: grey;
+      border: none;
+      font-size: 28px;
+      color: #FFFFFF;
+      padding: 20px;
+      width: 225px;
+      text-align: center;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+  }
+
+  .button:after {
+      content: "";
+      background: #f1f1f1;
+      display: block;
+      position: absolute;
+      padding-top: 300%;
+      padding-left: 350%;
+      margin-left: -20px !important;
+      margin-top: -120%;
+      opacity: 0;
+      transition: all 0.8s
+  }
+
+  .button:active:after {
+      padding: 0;
+      margin: 0;
+      opacity: 1;
+      transition: 0s
+  }
+
+  img {
+   padding:1px;
+   border:1px solid #021a40;
+}
+
+</style>
+      <!--<meta http-equiv="refresh" content="5">-->
+   </head>
+    <body>

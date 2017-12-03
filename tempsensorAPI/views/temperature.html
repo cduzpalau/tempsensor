@@ -1,0 +1,39 @@
+
+<div id="temperature">
+<table width="1230" border="0">
+  <tbody>
+    <tr>
+      <td width="280">&nbsp;<a target="_top" href="http://www.flamingtext.com/" ><img src="http://blog.flamingtext.com/blog/2017/06/22/flamingtext_com_1498100230_590219865.png" width="280" height="100" border="0" alt="Logo Design by FlamingText.com" title="Logo Design by FlamingText.com"></a>
+</td>
+      <td width="950" colspan="2" class="alarm-cell"><h1 class="alarm-text animated infinite flash">High Temperature Alarm Detected</h1></td>
+    </tr>
+    <tr height="300">
+		<td class="black-cell"><h2>Vending Machine ID</h2><h2>4-8-15-16-23-42</h2></td>
+		<td width="475" class="black-cell"><h2>Temperature <br> (Threshold: 91&deg;F)</h2><h2 id="temperature-id">{{temperature}}</h2><button type="button" id="farenheit" class="button" onClick="setFarenheit()">&deg;F</button><button type="button" id="celcius" class="button" onClick="setCelcius()">&deg;C</button></td>
+		<td width="475" class="black-cell"><h2>Vending Machine Location</h2><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3224.2123079431453!2d-115.18004188448131!3d36.08831231514535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c8c5db25429e73%3A0xe6cf48e8cf920288!2sMandalay+Bay+Convention+Center!5e0!3m2!1sen!2sus!4v1498103329407" width="475" height="260" frameborder="0" style="border:0" allowfullscreen></iframe></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<script type="text/javascript">
+    var unit = false;
+    setInterval(change, 1000);
+    function change() {
+      var elem = document.getElementById("temperature-id");
+      $.ajax({
+        url: "http://piball2.cc.lab:3000/temp"
+    }).then(function(data) {
+      if (unit) {
+       elem.innerHTML = data.temperature + "&deg;C";
+     }else{
+       elem.innerHTML = Math.round(data.temperature * 1.8 + 32) + "&deg;F";
+     }
+    });
+    }
+    function setFarenheit(){
+      unit = false;
+    }
+    function setCelcius(){
+      unit = true;
+    }
+</script>

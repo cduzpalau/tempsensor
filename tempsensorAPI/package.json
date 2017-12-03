@@ -1,0 +1,21 @@
+{
+  "name": "tempsensorapi",
+  "version": "1.0.0",
+  "description": "Temperature Sensor API",
+  "main": "src/app.js",
+  "dependencies": {
+    "argparse": "^1.0.9",
+    "better-console": "^1.0.0",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "multer": "^1.3.0",
+    "repeat": "^0.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "4everwo",
+  "license": "ISC"
+}
