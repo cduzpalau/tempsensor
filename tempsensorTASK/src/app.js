@@ -75,13 +75,12 @@ function dothisforever () {
     if (!active && (newTemp < args.threshold)) {
       console.log("Temperature dropped BELOW threshold(-" + args.threshold + "°C-)");
       console.log("Previous temperature = " + currentTemp + "°C - New temperature = " + newTemp + "°C");
-      console.log("sending Cancel TASK and activating");
+      console.log("checking TASK status to see if it hasn't picked up by an Agent and Activating");
       if (!args.offline) {
-        console.log("actually sending");
+        console.log("*actually sending*");
         tempTaskCancel();
       }
       active=true;
-//TODO Send API call to cancel the TASK
     }
   }
   
@@ -89,7 +88,7 @@ function dothisforever () {
 }
 
 
-
+//Create task with the right parameters and populate taskRefURL
 function tempTaskRequest(sensorParameters){
   // create an ordered array of call variables
   var callVarsArray = [sensor.socket, sensor.location, "callVar_value_3",
@@ -122,33 +121,36 @@ function tempTaskRequest(sensorParameters){
 
 }
 
-//Cancel task if task is queued or not accepted
+//Cancel TASK if status is "queued" or "unread"
 function tempTaskCancel(){
 
+//First query the status
   // The call to query the status of a task returns a Promise, which when resolved 
   // provides an object that contains the `status` and `statusReason` of the task 
-  var queryRequest = cceTaskRouter.getTaskStatus(taskRefURL);
+  var queryRequest = taskRouter.getTaskStatus(taskRefURL);
 
   // define behavior on how to resolve the Promise 
   queryRequest.then (function(response) {
   // the `response` is an object that contains the `status` and `statusReason` of the task 
-  console.log('Status of Task with RefURL \'' + taskRefURL + '\' is ' + JSON.stringify(response));
-  // The call to cancel a task returns a Promise, however there is no data 
-  // in the response that is useful beyond the result of the request (success/failure) 
-  //var cancelRequest = taskRouter.cancelTaskRequest(taskRefURL);
-  // define behavior on how to resolve the Promise 
-  // cancelRequest.then (function(response) {
-  // the `response` does not really contain any data. Just indicates a successful cancellation. 
-   //   console.log('Task with RefURL \'' + taskRefURL + '\' cancelled successfully.');
-   // }).catch (function(error) {
-   //   console.log('Oops! Something went wrong.' + error);
-   // });
+  //console.log('Status of Task with RefURL \'' + taskRefURL + '\' is ' + JSON.stringify(response));
+  var taskStatus = response.status;
+  if (taskStatus.toUpperCase() === "QUEUED" || taskStatus.toUpperCase() === "UNREAD"){
+	  console.log('Status of Task with RefURL \'' + taskRefURL + '\' is ' + taskStatus)
+	  // The call to cancel a task returns a Promise, however there is no data 
+      // in the response that is useful beyond the result of the request (success/failure) 
+	  var cancelRequest = taskRouter.cancelTaskRequest(taskRefURL);
+	  // define behavior on how to resolve the Promise 
+	  cancelRequest.then (function(response) {
+	    //the `response` does not really contain any data. Just indicates a successful cancellation. 
+	    console.log('Task with RefURL \'' + taskRefURL + '\' cancelled successfully.');
+	  }).catch (function(error) {
+	    console.log('Oops! Something went wrong when cancelling the task: ' + error);
+	  });
+  }
+    
   }).catch (function(error) {
-   console.log('Oops! Something went wrong.');
+    console.log('Oops! Something went wrong when querying for task status: ' + error);
   });
-
-
-  
 }
 
 
