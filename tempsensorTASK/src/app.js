@@ -5,7 +5,7 @@ var taskRouter = require('cce-task-routing');
 //define parameters
 var socialminer = '10.10.10.5';
 var sensor = {
-  socket: "10.10.10.212:3000",
+  socket: "localhost:3000",
   location: "London"
 };
 
