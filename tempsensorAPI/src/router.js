@@ -2,7 +2,7 @@ var renderer = require("./renderer.js");
 var readtemp = require ('./readTemp.js');
 
 //2. Handle HTTP route GET / and update the temperature
-function home(request, response) {
+function home(request, response, modifier) {
   //if url == "/" && GET
   if (request.url === "/") {
     //get the temperature from the file
