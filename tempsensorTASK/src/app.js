@@ -146,6 +146,8 @@ function tempTaskCancel(){
 	  }).catch (function(error) {
 	    console.log('Oops! Something went wrong when cancelling the task: ' + error);
 	  });
+  }else{
+    console.log("Task already picked up by an Agent and it will not be cancelled")
   }
     
   }).catch (function(error) {
